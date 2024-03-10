@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // PostItem.js
+        function PostItem() {
+            return (
+                <div className = "post-item">
+                    <h2 className = "post-title">C#(.NET) - Tương tác với ...</h2>
+                    <p className = "post-desc">Bạn có kiến thức ngôn ngữ C# ...</p>
+                    <p className = "post-published">Một ngày trước</p>    
+                </div>
+            )
+        }
+        
+        // App.js
+        function App() {
+            return (
+                <div id="wrapper">
+                    <PostItem/>
+                    <PostItem/>
+                    <PostItem/>
+                </div>
+            )
+        }
+
+        //index.js
+        ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+</body>
+</html>

@@ -8,7 +8,32 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 </head>
 <body>
+    <div id="root"></div>
     <script>
+        const postReact = React.createElement(
+            'div', 
+            {
+                className: 'post-item',
+            },
+            React.createElement(
+                'h2', 
+                {
+                    title: 'Học React tại F8'
+                }, 
+                'Học React'),
+            React.createElement('p', {}, 'Học ReactJS từ cơ bản đến nâng cao')
+        )
+
+        // Get root element
+        // const container = document.getElementById('root');
+
+        // React-DOM -> render UI
+        // React@17
+        // ReactDOM.render(postReact, root)
+
+        // React@18
+        const root = ReactDOM.createRoot(document.getElementById('root'))
+        root.render(postReact)
 
     </script>
 </body>
