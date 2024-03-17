@@ -122,25 +122,29 @@
     }
   ]
     
-        const CourseItem = props => (
+        const CourseItem = ({course, onClick}) => (
             <div>
-                <h2 onClick = {() => alert(props.title)}>{props.title}</h2>  
-                <img src={props.image} alt={props.title} />
-                <p>{props.description}</p>  
-                <p>{props.studentsCount}</p>  
+                <h2 onClick = {() => onClick(course)}>{course.title}</h2>  
+                <img src={course.image} alt={course.title} />
+                <p>{course.description}</p>  
+                <p>{course.studentsCount}</p>  
             </div>
         )
 
         function App() {
+
+            const handleClick = (course) => {
+                // alert(course.title);
+                console.log(course.title);
+            }
+            
             return (
                 <div id = "wrapper">
                     {courses.map(course => (
                         <CourseItem
                             key = {course.id}
-                            title={course.title}
-                            image={course.thumbnail_cdn}
-                            description={course.description}
-                            studentsCount={course.students_count}
+                            course = {course}
+                            onClick={handleClick}
                         />
                     ))}
                 </div>
