@@ -1,19 +1,19 @@
 import { useState } from "react";
 
-const gifts = ["CPU i9", "RAM 32GB RGB", "RGB Keyboard"];
-
 function App() {
-  const [gift, setGift] = useState()
+    const [name, setName] = useState();
+    const [mail, setMail] = useState();
 
-  const randomGift = () => {
-    const index = Math.floor(Math.random() * gifts.length)
-    setGift(gifts[index]);
-  }
+    const handleSubmit = () => {
+      setName("Nguyen Van B")
+      setMail("bnv@gmail.com")
+    }
 
     return (
-        <div className="App" style={{padding: 32}}>
-            <h1>{gift || 'Chua co phan thuong'}</h1>
-            <button onClick={randomGift}>Nhan thuong</button>
+        <div className="App" style={{ padding: 32 }}>
+            <input value={name} onChange={(e) => setName(e.target.value)} />
+            <input value={mail} onChange={(e) => setMail(e.target.value)} />
+            <button onClick={handleSubmit}>Change</button>
         </div>
     );
 }
