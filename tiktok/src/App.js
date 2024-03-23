@@ -1,26 +1,19 @@
 import { useState } from "react";
 
+const gifts = ["CPU i9", "RAM 32GB RGB", "RGB Keyboard"];
+
 function App() {
+  const [gift, setGift] = useState()
 
-  const orders = [100, 200 ,300]
-
-    const [info, setInfo] = useState({
-      name: 'Nguyen Van A',
-      age: 18,
-      address: 'Ha Noi, VN'
-    });
-
-    const handleUpdate = () => {
-      setInfo({
-        ...info,
-        bio: 'HIHI'
-      });
-    }
+  const randomGift = () => {
+    const index = Math.floor(Math.random() * gifts.length)
+    setGift(gifts[index]);
+  }
 
     return (
-        <div className="App">
-            <h1>{JSON.stringify(info)}</h1>
-            <button onClick = {handleUpdate}>Update</button>
+        <div className="App" style={{padding: 32}}>
+            <h1>{gift || 'Chua co phan thuong'}</h1>
+            <button onClick={randomGift}>Nhan thuong</button>
         </div>
     );
 }
