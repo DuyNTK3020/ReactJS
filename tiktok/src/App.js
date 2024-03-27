@@ -1,47 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Content from "./Content";
 
-const jobs = [
-    {
-        id: 1,
-        name: "Javascript",
-    },
-    {
-        id: 2,
-        name: "ReactJS",
-    },
-    {
-        id: 3,
-        name: "NodeJS",
-    },
-];
+// Note
+// Cả trong 3 trường hợp useEffect(callback), useEffect(callback, []), useEffect(callback, [deps])
+// Callback luôn luôn được gọi sau component mounted
 
 function App() {
-    const storageJobs = JSON.parse(localStorage.getItem('jobs'))
-
-    const [job, setJob] = useState("");
-    const [jobs, setJobs] = useState(storageJobs ?? []);
-
-    const handleSubmit = () => {
-        setJobs(prev => {
-          const newJobs = [...prev, job]
-          
-          const jsonJobs = JSON.stringify(newJobs)
-          localStorage.setItem('jobs', jsonJobs)
-
-          return newJobs
-        });
-        setJob('')
-    };
-
+    const [show, setShow] = useState(false); 
     return (
         <div className="App" style={{ padding: 32 }}>
-            <input value={job} onChange={(e) => setJob(e.target.value)} />
-            <button onClick={handleSubmit}>Add</button>
-            <ul>
-                {jobs.map((job, index) => (
-                    <li key={index}>{job}</li>
-                ))}
-            </ul>
+            <button onClick={() => setShow(!show)}>Toggle</button>
+            {show && <Content />}
         </div>
     );
 }
