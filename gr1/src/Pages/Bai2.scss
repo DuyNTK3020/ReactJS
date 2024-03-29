@@ -1,0 +1,67 @@
+.Bai2 {
+    text-align: center;
+    .title {
+        margin-top: 50px;
+        color: #088178;
+        font-size: 60px;
+        span {
+            color: #25fff0;
+        }
+    }
+    .btn {
+        font-size: 16px;
+        padding: 10px 28px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        color: #fff;
+        background: #088178;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+    .form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 50px;
+        &-group {
+            label {
+                font-weight: 600;
+                margin-right: 10px;
+            }
+            input {
+                width: 40px;
+                height: 34px;
+                margin-top: 8px;
+                padding: 4px 8px;
+                border: 2px solid #ccc;
+                border-radius: 8px;
+            }
+        }
+    }
+
+    .board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 40px 0;
+        .row {
+            display: flex;
+            .boxes {
+                display: flex;
+                height: 200px;
+                width: 250px;
+                background-color: #fff;
+                border: 1px solid #000;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+
+}
