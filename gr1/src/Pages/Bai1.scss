@@ -1,0 +1,75 @@
+.Bai1 {
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .btn {
+        font-size: 16px;
+        padding: 10px 28px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        color: #fff;
+        background: #088178;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    .form {
+        margin-top: 30px;
+        width: 100%;
+        flex-wrap: wrap;
+        display: flex;
+        gap: 40px;
+        &-group {
+            label,
+            input {
+                display: block;
+            }
+            label {
+                font-weight: 600;
+            }
+            input {
+                width: 240px;
+                height: 34px;
+                margin-top: 8px;
+                padding: 4px 8px;
+                border: 2px solid #ccc;
+                border-radius: 8px;
+            }
+        }
+        &-btn {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+    }
+
+    table {
+        margin-top: 30px;
+        width: 100%;
+        border-collapse: collapse;
+        height: 300px;
+        overflow: auto;
+        td,
+        th {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            max-height: 50px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        tbody tr {
+            height: 50px;
+            td:last-child {
+                text-align: center;
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+import React, {useState} from 'react'
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHouseChimney } from '@fortawesome/free-solid-svg-icons';
+import './Navbar.scss'
+
+export const Navbar = () => {
+    const [menu, setMenu] = useState("");
+
+
+  return (
+    <div className='nav'>
+        <div className="nav__home">
+          <Link onClick={() => {setMenu("")}} to='/'><FontAwesomeIcon icon={faHouseChimney} /></Link>
+        </div>
+        <ul className="nav__menu">
+            <li><Link className={menu === "bai1" ? "active" : ""} onClick={() => {setMenu("bai1")}} to ='/bai1'>Bài 1</Link></li>
+            <li><Link className={menu === "bai2" ? "active" : ""} onClick={() => {setMenu("bai2")}} to ='/bai2'>Bài 2</Link></li>
+            <li><Link className={menu === "bai3" ? "active" : ""} onClick={() => {setMenu("bai3")}} to ='/bai3'>Bài 3</Link></li>
+            <li><Link className={menu === "bai4" ? "active" : ""} onClick={() => {setMenu("bai4")}} to ='/bai4'>Bài 4</Link></li>
+            <li><Link className={menu === "bai5" ? "active" : ""} onClick={() => {setMenu("bai5")}} to ='/bai5'>Bài 5</Link></li>
+            <li><Link className={menu === "bai6" ? "active" : ""} onClick={() => {setMenu("bai6")}} to ='/bai6'>Bài 6</Link></li>
+            <li><Link className={menu === "bai7" ? "active" : ""} onClick={() => {setMenu("bai7")}} to ='/bai7'>Bài 7</Link></li>
+            <li><Link className={menu === "tictactoe" ? "active" : ""} onClick={() => {setMenu("tictactoe")}} to ='/tictactoe'>TicTacToe</Link></li>
+        </ul>
+    </div>
+  )
+}
