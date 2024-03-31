@@ -16,8 +16,7 @@ export const Navbar = () => {
         <ul className="nav__menu">
             <li><Link className={menu === "bai1" ? "active" : ""} onClick={() => {setMenu("bai1")}} to ='/bai1'>Bài 1</Link></li>
             <li><Link className={menu === "bai2" ? "active" : ""} onClick={() => {setMenu("bai2")}} to ='/bai2'>Bài 2</Link></li>
-            <li><Link className={menu === "bai3" ? "active" : ""} onClick={() => {setMenu("bai3")}} to ='/bai3'>Bài 3</Link></li>
-            <li><Link className={menu === "bai4" ? "active" : ""} onClick={() => {setMenu("bai4")}} to ='/bai4'>Bài 4</Link></li>
+            <li><Link className={menu === "bai3_4" ? "active" : ""} onClick={() => {setMenu("bai3_4")}} to ='/bai3_4'>Bài 3 và 4</Link></li>
             <li><Link className={menu === "bai5" ? "active" : ""} onClick={() => {setMenu("bai5")}} to ='/bai5'>Bài 5</Link></li>
             <li><Link className={menu === "bai6" ? "active" : ""} onClick={() => {setMenu("bai6")}} to ='/bai6'>Bài 6</Link></li>
             <li><Link className={menu === "bai7" ? "active" : ""} onClick={() => {setMenu("bai7")}} to ='/bai7'>Bài 7</Link></li>
