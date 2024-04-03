@@ -1,8 +1,23 @@
-import React, { useState } from 'react'
-import './Bai1.scss'
+import React, { useState } from 'react';
+import './Bai1_7.scss';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
-export const Bai1 = () => {
+
+export const Bai1_7 = () => {
     const storageStudents = JSON.parse(localStorage.getItem("students")) || [];
+
+    // Load font
+    const font = {
+        family: 'Open Sans',
+        style: 'normal'
+    };
+
+    // Add font to jsPDF
+    const doc = new jsPDF();
+    doc.addFont(font.family, 'OpenSans', font.style);
+    doc.setFont('OpenSans');
 
     const [students, setStudents] = useState(storageStudents)
 
@@ -30,9 +45,58 @@ export const Bai1 = () => {
         localStorage.setItem("students", JSON.stringify(updatedStudents));
     }
 
-  return (
-    <div className="Bai1" style={{ padding: 32 }}>
-            <h1>Bài 1: Thao tác với Data Table​ </h1>
+    // const exportToExcel = () => {
+    //     const wb = XLSX.utils.table_to_book(document.getElementById('my-table'));
+    //     XLSX.writeFile(wb, 'students.xlsx');
+    // }
+    
+    const exportToExcel = () => {
+        const filteredStudents = students.map(({name, id, dob, email}) => ({
+            "Họ Tên": name,
+            "MSSV": id,
+            "Ngày sinh": dob,
+            "Email": email,
+            "Địa chỉ": ""
+        }));
+        
+        const ws = XLSX.utils.json_to_sheet(filteredStudents);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Students');
+        XLSX.writeFile(wb, 'students.xlsx');
+    }
+
+    const exportToPDF = () => {
+        const doc = new jsPDF();
+    
+        // Set the title
+        doc.text("Danh sách sinh viên", 10, 10);
+    
+        // Define column headers
+        const headers = ['STT', 'MSSV', 'Họ tên', 'Ngày sinh', 'Email'];
+        
+        // Define rows data
+        const rows = students.map((student, index) => [
+            index + 1,
+            student.id,
+            student.name,
+            student.dob,
+            student.email
+        ]);
+    
+        // AutoTable plugin to generate table
+        doc.autoTable({
+            head: [headers],
+            body: rows
+        });
+    
+        // Save the PDF
+        doc.save("students.pdf");
+    };
+     
+
+    return (
+        <div className="Bai1" style={{ padding: 32 }}>
+            <h1>Bài 1: Thao tác với Data Table</h1>
             <form onSubmit={handleFormSubmit} className='form'>
                 <div className="form-group">
                     <label htmlFor="name">Họ và tên</label>
@@ -61,7 +125,7 @@ export const Bai1 = () => {
                 </div>
             </form>
 
-            <table>
+            <table id='my-table'>
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -85,6 +149,12 @@ export const Bai1 = () => {
                     ))}
                 </tbody>
             </table>
+
+            <div className="export">
+                <p className='export--title'>Export:</p>
+                <button className='btn' onClick={exportToExcel}>Excel</button>
+                <button className="btn" onClick={exportToPDF}>PDF</button>
+            </div>
         </div>
-  )
+    )
 }

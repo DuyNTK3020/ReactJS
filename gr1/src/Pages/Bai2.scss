@@ -1,12 +1,11 @@
 .Bai2 {
     text-align: center;
-    .title {
-        margin-top: 50px;
+    h1 {
+        display: inline-block;
+        padding: 20px 0;
+        font-size: 28px;
         color: #088178;
-        font-size: 60px;
-        span {
-            color: #25fff0;
-        }
+        font-weight: 500;
     }
     .btn {
         font-size: 16px;
