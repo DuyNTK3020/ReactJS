@@ -96,7 +96,7 @@ export const Bai1_7 = () => {
 
     return (
         <div className="Bai1" style={{ padding: 32 }}>
-            <h1>Bài 1: Thao tác với Data Table</h1>
+            <h1>Bài 1, 7: Thao tác với Data Table và export data dạng excel và pdf</h1>
             <form onSubmit={handleFormSubmit} className='form'>
                 <div className="form-group">
                     <label htmlFor="name">Họ và tên</label>

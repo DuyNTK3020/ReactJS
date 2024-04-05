@@ -16,10 +16,10 @@
         color: #fff;
         background: #088178;
         cursor: pointer;
-    }
 
-    .btn:hover {
-        opacity: 0.9;
+        &:hover {
+            opacity: 0.9;
+        }
     }
 
     .form {
