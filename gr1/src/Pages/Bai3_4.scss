@@ -66,6 +66,12 @@
                 border: 2px solid #ccc;
                 border-radius: 8px;
             }
+
+            .box-btn {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ export const Bai3_4 = () => {
     ];
 
     const [mazeState, setMazeState] = useState(maze);
+    const [mazeData, setMazeData] = useState('');
 
     const renderBoard = () => {
         return (
@@ -42,9 +43,12 @@ export const Bai3_4 = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         handleControl(event);
-        // Clear input after running
-        // event.target.mazeData.value = '';
     };
+
+    const showAnswer = () => {
+        setMazeData('llllllllll');
+    }
+    
 
     const handleControl = async (event) => {
         const moves = event.target.mazeData.value.split("\n");
@@ -52,7 +56,6 @@ export const Bai3_4 = () => {
         let catPosition = { row: null, col: null };
         let fishPosition = { row: null, col: null };
 
-        // Find initial positions of cat and fish
         mazeState.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
                 if (cell === 'cat') {
@@ -95,31 +98,24 @@ export const Bai3_4 = () => {
                     break;
             }
 
-            // Check if the cat reaches the fish
             if (catPosition.row === fishPosition.row && catPosition.col === fishPosition.col) {
-                // Replace fish with cat
                 mazeState[catPosition.row][catPosition.col] = 'cat';
-                // Update state to trigger re-render
                 setMazeState([...mazeState]);
-                // Show win message
                 Swal.fire({
                     title: 'Chiến thắng!',
                     text: 'Bạn đã đưa mèo đến gần cá!',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
-                return; // Exit function to prevent further moves
+                return;
             }
 
-            // Update the maze with new cat position
             const updatedMaze = [...mazeState];
             updatedMaze[catPosition.row][catPosition.col] = 'cat';
             updatedMaze[fishPosition.row][fishPosition.col] = 'fish';
 
-            // Update state to trigger re-render
             setMazeState(updatedMaze);
 
-            // Wait for 0.5 seconds before next move
             await new Promise(resolve => setTimeout(resolve, 500));
         }
     };
@@ -135,11 +131,16 @@ export const Bai3_4 = () => {
                         placeholder="Nhập dữ liệu của mê cung ở đây..."
                         rows={10}
                         cols={50}
-                        required
+                        // required
                     />
-                    <button className="btn" type="submit">
-                        Run
-                    </button>
+                    <div className="box-btn">
+                        <button className="btn" type="submit">
+                            Run
+                        </button>
+                        <button className="btn" onClick={showAnswer}>
+                            Auto Complete
+                        </button>
+                    </div>
                 </form>
             </div>
             <ToastContainer />

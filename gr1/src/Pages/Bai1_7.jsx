@@ -3,7 +3,7 @@ import './Bai1_7.scss';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
+import { ToastContainer, toast } from "react-toastify";
 
 export const Bai1_7 = () => {
     const storageStudents = JSON.parse(localStorage.getItem("students")) || [];
@@ -29,13 +29,40 @@ export const Bai1_7 = () => {
         const dob = event.target.dob.value
         const email = event.target.email.value
 
-        const newStudents = {name, id, dob, email}
+        const checkStudent = students.find(student => student.id === id);
 
-        const updatedStudents = [...students, newStudents]
-        setStudents(updatedStudents)
+        if (!checkStudent) {
+            const newStudents = {name, id, dob, email}
+    
+            const updatedStudents = [...students, newStudents]
+            setStudents(updatedStudents)
+    
+            localStorage.setItem("students", JSON.stringify(updatedStudents));
+            event.target.reset();
 
-        localStorage.setItem("students", JSON.stringify(updatedStudents));
-        event.target.reset();
+            toast.success(`Đã thêm thành công sinh viên ${name}`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } else {
+            toast.error(`MSSV: ${id} đã tồn tại. Vui lòng kiểm tra lại`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+        }
+
     }
 
     const handleDelete = (index) => {
@@ -110,7 +137,7 @@ export const Bai1_7 = () => {
 
                 <div className="form-group">
                     <label htmlFor="dob">Ngày sinh</label>
-                    <input type="date" id="dob" name="dob" required />
+                    <input type="date" id="dob" name="dob" placeholder='dd/mm/yyyy' required />
                 </div>
 
                 <div className="form-group">
@@ -155,6 +182,7 @@ export const Bai1_7 = () => {
                 <button className='btn' onClick={exportToExcel}>Excel</button>
                 <button className="btn" onClick={exportToPDF}>PDF</button>
             </div>
+            <ToastContainer />
         </div>
     )
 }
