@@ -7,25 +7,29 @@ import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2'
 
 export const Bai3_4 = () => {
-    const maze = [
-        ["", "", "", "", "fish", ""],
-        ["", "", "", "water", "water", "water"],
-        ["", "", "", "", "", ""],
-        ["water", "water", "water", "water", "", ""],
-        ["", "", "", "", "", ""],
-        ["", "", "", "", "", ""],
-        ["", "", "water", "water", "water", "water"],
-        ["", "", "", "", "", ""],
-        ["", "", "", "cat", "", ""]
-    ];
+    const [mazeInput, setMazeInput] = useState('');
+    const [catPosition, setCatPosition] = useState({row: 8, col: 3});
+    const [fishPosition, setFishPosition] = useState({row: 0, col: 4});
+    const [waterPosition, setWaterPosition] = useState([{row: 1, col: 3}, {row: 1, col: 4}, {row: 1, col: 5}, {row: 3, col: 0}, {row: 3, col: 1}, {row: 3, col: 2}, {row: 3, col: 3}, {row: 3, col: 4}, {row: 6, col: 2}, {row: 6, col: 3}, {row: 6, col: 4}, {row: 6, col: 5}])
 
-    const [mazeState, setMazeState] = useState(maze);
-    const [mazeData, setMazeData] = useState('');
+    const [maze, setMaze] = useState(() => {
+        // Tạo bản đồ
+        const initialMaze = Array(9).fill().map(() => Array(6).fill(""));   
+        // Thêm mèo vào maze
+        initialMaze[catPosition.row][catPosition.col] = "cat";
+        // Thêm cá vào maze
+        initialMaze[fishPosition.row][fishPosition.col] = "fish";
+        // Thêm nước vào maze
+        waterPosition.forEach(({row, col}) => {
+            initialMaze[row][col] = "water";
+        });
+        return initialMaze;
+    });
 
     const renderBoard = () => {
         return (
             <div className="board">
-                {mazeState.map((row, rowIndex) => (
+                {maze.map((row, rowIndex) => (
                     <div key={rowIndex} className="row">
                         {row.map((cell, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="boxes">
@@ -40,85 +44,68 @@ export const Bai3_4 = () => {
         );
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        handleControl(event);
-    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        handleControll();
+        setMazeInput('')
+    }
 
     const showAnswer = () => {
-        setMazeData('llllllllll');
+        setMazeInput(`l\nl\nu\nu\nu\nu\nr\nr\nr\nr\nu\nu\nl\nl\nl\nu\nu\nr\nr`);
     }
-    
 
-    const handleControl = async (event) => {
-        const moves = event.target.mazeData.value.split("\n");
-
-        let catPosition = { row: null, col: null };
-        let fishPosition = { row: null, col: null };
-
-        mazeState.forEach((row, rowIndex) => {
-            row.forEach((cell, colIndex) => {
-                if (cell === 'cat') {
-                    catPosition.row = rowIndex;
-                    catPosition.col = colIndex;
-                } else if (cell === 'fish') {
-                    fishPosition.row = rowIndex;
-                    fishPosition.col = colIndex;
-                }
-            });
-        });
-
-        // Move the cat towards the fish without touching water
+    const handleControll = () => {
+        const moves = mazeInput.split("\n");
+        
+        let updatedMaze = [...maze];
+        let updatedCatPosition = { ...catPosition };
         for (let i = 0; i < moves.length; i++) {
-            // Remove the cat from its old position
-            mazeState[catPosition.row][catPosition.col] = '';
-
             switch (moves[i]) {
                 case 'l':
-                    if (catPosition.col > 0 && mazeState[catPosition.row][catPosition.col - 1] !== 'water') {
-                        catPosition.col -= 1;
+                    if (updatedCatPosition.col > 0 && maze[updatedCatPosition.row][updatedCatPosition.col - 1] !== 'water') {
+                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
+                        updatedCatPosition.col -= 1;
                     }
                     break;
                 case 'r':
-                    if (catPosition.col < mazeState[0].length - 1 && mazeState[catPosition.row][catPosition.col + 1] !== 'water') {
-                        catPosition.col += 1;
+                    if (updatedCatPosition.col < maze[0].length - 1 && maze[updatedCatPosition.row][updatedCatPosition.col + 1] !== 'water') {
+                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
+                        updatedCatPosition.col += 1;
                     }
                     break;
                 case 'u':
-                    if (catPosition.row > 0 && mazeState[catPosition.row - 1][catPosition.col] !== 'water') {
-                        catPosition.row -= 1;
+                    if (updatedCatPosition.row > 0 && maze[updatedCatPosition.row - 1][updatedCatPosition.col] !== 'water') {
+                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
+                        updatedCatPosition.row -= 1;
                     }
                     break;
                 case 'd':
-                    if (catPosition.row < mazeState.length - 1 && mazeState[catPosition.row + 1][catPosition.col] !== 'water') {
-                        catPosition.row += 1;
+                    if (updatedCatPosition.col < maze.length - 1 && maze[updatedCatPosition.row + 1][updatedCatPosition.col] !== 'water') {
+                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
+                        updatedCatPosition.row += 1;
                     }
                     break;
                 default:
                     break;
             }
 
-            if (catPosition.row === fishPosition.row && catPosition.col === fishPosition.col) {
-                mazeState[catPosition.row][catPosition.col] = 'cat';
-                setMazeState([...mazeState]);
+            if (updatedCatPosition.row === fishPosition.row && updatedCatPosition.col === fishPosition.col) {
+                updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = 'cat';
+                setMaze(updatedMaze);
                 Swal.fire({
                     title: 'Chiến thắng!',
-                    text: 'Bạn đã đưa mèo đến gần cá!',
+                    text: 'Mèo đã bắt được cá',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 });
                 return;
             }
 
-            const updatedMaze = [...mazeState];
-            updatedMaze[catPosition.row][catPosition.col] = 'cat';
-            updatedMaze[fishPosition.row][fishPosition.col] = 'fish';
-
-            setMazeState(updatedMaze);
-
-            await new Promise(resolve => setTimeout(resolve, 500));
+            setCatPosition(updatedCatPosition);
+            updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = 'cat';
+            setMaze(updatedMaze);
         }
-    };
+    }
 
     return (
         <div className="Bai3">
@@ -131,14 +118,16 @@ export const Bai3_4 = () => {
                         placeholder="Nhập dữ liệu của mê cung ở đây..."
                         rows={10}
                         cols={50}
-                        // required
+                        value={mazeInput}
+                        onChange={e => setMazeInput(e.target.value)}
+                        required
                     />
                     <div className="box-btn">
                         <button className="btn" type="submit">
                             Run
                         </button>
-                        <button className="btn" onClick={showAnswer}>
-                            Auto Complete
+                        <button className="btn" type="button" onClick={showAnswer}>
+                            Show Answer
                         </button>
                     </div>
                 </form>
