@@ -6,30 +6,57 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2'
 
+const catPosition = { row: null, col: null };
+const fishPosition = { row: null, col: null };
+const maze = [
+    ["", "", "", "", "fish", ""],
+    ["", "", "", "water", "water", "water"],
+    ["", "", "", "", "", ""],
+    ["water", "water", "water", "water", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "", "", "", ""],
+    ["", "", "water", "water", "water", "water"],
+    ["", "", "", "", "", ""],
+    ["", "", "", "cat", "", ""]
+];
+
 export const Bai3_4 = () => {
     const [mazeInput, setMazeInput] = useState('');
-    const [catPosition, setCatPosition] = useState({row: 8, col: 3});
-    const [fishPosition, setFishPosition] = useState({row: 0, col: 4});
-    const [waterPosition, setWaterPosition] = useState([{row: 1, col: 3}, {row: 1, col: 4}, {row: 1, col: 5}, {row: 3, col: 0}, {row: 3, col: 1}, {row: 3, col: 2}, {row: 3, col: 3}, {row: 3, col: 4}, {row: 6, col: 2}, {row: 6, col: 3}, {row: 6, col: 4}, {row: 6, col: 5}])
+    const [mazeState, setMazeState] = useState(maze);
+    const [playAgain, setPlayAgain] = useState(false);
 
-    const [maze, setMaze] = useState(() => {
-        // Tạo bản đồ
-        const initialMaze = Array(9).fill().map(() => Array(6).fill(""));   
-        // Thêm mèo vào maze
-        initialMaze[catPosition.row][catPosition.col] = "cat";
-        // Thêm cá vào maze
-        initialMaze[fishPosition.row][fishPosition.col] = "fish";
-        // Thêm nước vào maze
-        waterPosition.forEach(({row, col}) => {
-            initialMaze[row][col] = "water";
+    useEffect(() => {
+        // Lấy vị trí ban đầu của cat và fish trong map
+        mazeState.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                if (cell === 'cat') {
+                    catPosition.row = rowIndex;
+                    catPosition.col = colIndex;
+                } else if (cell === 'fish') {
+                    fishPosition.row = rowIndex;
+                    fishPosition.col = colIndex;
+                }
+            });
         });
-        return initialMaze;
-    });
+    },[])
+
+    const notifiError = (move) => {
+        toast.error(`Bạn đã đâm vào vật cản bên ${move}`, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+    }
 
     const renderBoard = () => {
         return (
             <div className="board">
-                {maze.map((row, rowIndex) => (
+                {mazeState.map((row, rowIndex) => (
                     <div key={rowIndex} className="row">
                         {row.map((cell, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="boxes">
@@ -44,54 +71,60 @@ export const Bai3_4 = () => {
         );
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        handleControll();
-        setMazeInput('')
-    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        handleControl(event);
+        setMazeInput('');
+    };
 
     const showAnswer = () => {
-        setMazeInput(`l\nl\nu\nu\nu\nu\nr\nr\nr\nr\nu\nu\nl\nl\nl\nu\nu\nr\nr`);
+        setMazeInput(`l\nl\nu\nu\nu\nu\nr\nr\nr\nu\nu\nl\nl\nu\nu\nr\nr`);
     }
 
-    const handleControll = () => {
-        const moves = mazeInput.split("\n");
-        
-        let updatedMaze = [...maze];
-        let updatedCatPosition = { ...catPosition };
+    const handleControl = async (event) => {
+        const moves = event.target.mazeData.value.split("\n");
+
         for (let i = 0; i < moves.length; i++) {
+            const updatedMazeState = [...mazeState];
+            updatedMazeState[catPosition.row][catPosition.col] = '';
+
             switch (moves[i]) {
                 case 'l':
-                    if (updatedCatPosition.col > 0 && maze[updatedCatPosition.row][updatedCatPosition.col - 1] !== 'water') {
-                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
-                        updatedCatPosition.col -= 1;
+                    if (catPosition.col > 0 && updatedMazeState[catPosition.row][catPosition.col - 1] !== 'water') {
+                        catPosition.col -= 1;
+                    } else {
+                        notifiError("trái");
                     }
                     break;
                 case 'r':
-                    if (updatedCatPosition.col < maze[0].length - 1 && maze[updatedCatPosition.row][updatedCatPosition.col + 1] !== 'water') {
-                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
-                        updatedCatPosition.col += 1;
+                    if (catPosition.col < updatedMazeState[0].length - 1 && updatedMazeState[catPosition.row][catPosition.col + 1] !== 'water') {
+                        catPosition.col += 1;
+                    } else {
+                        notifiError("phải");
                     }
                     break;
                 case 'u':
-                    if (updatedCatPosition.row > 0 && maze[updatedCatPosition.row - 1][updatedCatPosition.col] !== 'water') {
-                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
-                        updatedCatPosition.row -= 1;
+                    if (catPosition.row > 0 && updatedMazeState[catPosition.row - 1][catPosition.col] !== 'water') {
+                        catPosition.row -= 1;
+                    } else {
+                        notifiError("trên");
                     }
                     break;
                 case 'd':
-                    if (updatedCatPosition.col < maze.length - 1 && maze[updatedCatPosition.row + 1][updatedCatPosition.col] !== 'water') {
-                        updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = '';
-                        updatedCatPosition.row += 1;
+                    if (catPosition.row < updatedMazeState.length - 1 && updatedMazeState[catPosition.row + 1][catPosition.col] !== 'water') {
+                        catPosition.row += 1;
+                    } else {
+                        notifiError("dưới");
                     }
                     break;
                 default:
                     break;
             }
+            
+            updatedMazeState[catPosition.row][catPosition.col] = 'cat';
+            setMazeState([...updatedMazeState]);
 
-            if (updatedCatPosition.row === fishPosition.row && updatedCatPosition.col === fishPosition.col) {
-                updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = 'cat';
-                setMaze(updatedMaze);
+            if (catPosition.row === fishPosition.row && catPosition.col === fishPosition.col) {
                 Swal.fire({
                     title: 'Chiến thắng!',
                     text: 'Mèo đã bắt được cá',
@@ -101,10 +134,26 @@ export const Bai3_4 = () => {
                 return;
             }
 
-            setCatPosition(updatedCatPosition);
-            updatedMaze[updatedCatPosition.row][updatedCatPosition.col] = 'cat';
-            setMaze(updatedMaze);
+            await new Promise(resolve => setTimeout(resolve, 500));
         }
+    };
+
+    const handlePlayAgain = () => {
+        setMazeState([...maze]);
+        mazeState.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                if (cell === 'cat') {
+                    catPosition.row = rowIndex;
+                    catPosition.col = colIndex;
+                } else if (cell === 'fish') {
+                    fishPosition.row = rowIndex;
+                    fishPosition.col = colIndex;
+                }
+            });
+        });
+        console.log('Play Again')
+        console.log(mazeState)
+        console.log(catPosition)
     }
 
     return (
@@ -122,13 +171,16 @@ export const Bai3_4 = () => {
                         onChange={e => setMazeInput(e.target.value)}
                         required
                     />
-                    <div className="box-btn">
+                    <div className="btn-group">
                         <button className="btn" type="submit">
                             Run
                         </button>
                         <button className="btn" type="button" onClick={showAnswer}>
                             Show Answer
                         </button>
+                        {/* <button className="btn" type="button" onClick={handlePlayAgain}>
+                            Play Again
+                        </button> */}
                     </div>
                 </form>
             </div>
