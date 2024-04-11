@@ -3,6 +3,7 @@ import './Bai3_4.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWater, faCat, faFishFins } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
+import all_icons from '../Assets/Icons/all_icons'
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2'
 
@@ -59,9 +60,12 @@ export const Bai3_4 = () => {
                     <div key={rowIndex} className="row">
                         {row.map((cell, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="boxes">
-                                {cell === 'fish' && <FontAwesomeIcon icon={faFishFins} color='#111' />}
-                                {cell === 'water' && <FontAwesomeIcon icon={faWater} color='blue' />}
-                                {cell === 'cat' && <FontAwesomeIcon icon={faCat} color='#111' />}
+                                {/* {cell === 'fish' && <FontAwesomeIcon icon={faFishFins} color='#111' />} */}
+                                {cell === 'fish' && <img src={all_icons.cup}></img>}
+                                {cell === 'water' && <img src={all_icons.geng_icon}></img>}
+                                {/* {cell === 'water' && <FontAwesomeIcon icon={faWater} color='blue' />} */}
+                                {cell === 'cat' && <img src={all_icons.t1_icon}></img>}
+                                {/* {cell === 'cat' && <FontAwesomeIcon icon={faCat} color='#111' />} */}
                             </div>
                         ))}
                     </div>
