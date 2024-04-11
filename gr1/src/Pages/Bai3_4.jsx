@@ -22,8 +22,7 @@ const maze = [
 
 export const Bai3_4 = () => {
     const [mazeInput, setMazeInput] = useState('');
-    const [mazeState, setMazeState] = useState(maze);
-    const [playAgain, setPlayAgain] = useState(false);
+    const [mazeState, setMazeState] = useState(JSON.parse(JSON.stringify(maze)));
 
     useEffect(() => {
         // Lấy vị trí ban đầu của cat và fish trong map
@@ -120,7 +119,7 @@ export const Bai3_4 = () => {
                 default:
                     break;
             }
-            
+
             updatedMazeState[catPosition.row][catPosition.col] = 'cat';
             setMazeState([...updatedMazeState]);
 
@@ -139,8 +138,11 @@ export const Bai3_4 = () => {
     };
 
     const handlePlayAgain = () => {
-        setMazeState([...maze]);
-        mazeState.forEach((row, rowIndex) => {
+        // Tạo một bản sao của maze để cập nhật trạng thái
+        const newMazeState = [...maze];
+        // Cập nhật mazeState
+        setMazeState(JSON.parse(JSON.stringify(maze)));
+        maze.forEach((row, rowIndex) => {
             row.forEach((cell, colIndex) => {
                 if (cell === 'cat') {
                     catPosition.row = rowIndex;
@@ -153,6 +155,7 @@ export const Bai3_4 = () => {
         });
         console.log('Play Again')
         console.log(mazeState)
+        console.log(newMazeState)
         console.log(catPosition)
     }
 
@@ -178,9 +181,9 @@ export const Bai3_4 = () => {
                         <button className="btn" type="button" onClick={showAnswer}>
                             Show Answer
                         </button>
-                        {/* <button className="btn" type="button" onClick={handlePlayAgain}>
+                        <button className="btn" type="button" onClick={handlePlayAgain}>
                             Play Again
-                        </button> */}
+                        </button>
                     </div>
                 </form>
             </div>
