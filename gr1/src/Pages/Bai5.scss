@@ -1,29 +1,15 @@
-.map-container {
-  max-width: 600px; /* Giới hạn độ rộng của bản đồ */
-  max-height: 400px; /* Giới hạn độ dài của bản đồ */
+.bai5 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.container {
-  height: calc(100vh - 80px);
-  width: 80%;
-  text-align: center;
+.right {
+  width: 100%;
+  height: calc(100vh - 100px);
+  flex: 1;
+}
 
-  .hero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-
-    .hero--location {
-      flex: 1;
-    }
-
-    .hero--map {
-      flex: 1;
-      height: 100%;
-      width: 100%;
-      max-width: 600px; /* Giới hạn độ rộng của bản đồ */
-      max-height: 400px; /* Giới hạn độ dài của bản đồ */
-    }
-  }
+.left {
+  flex: 1;
 }

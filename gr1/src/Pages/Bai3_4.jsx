@@ -60,12 +60,12 @@ export const Bai3_4 = () => {
                     <div key={rowIndex} className="row">
                         {row.map((cell, colIndex) => (
                             <div key={`${rowIndex}-${colIndex}`} className="boxes">
-                                {/* {cell === 'fish' && <FontAwesomeIcon icon={faFishFins} color='#111' />} */}
-                                {cell === 'fish' && <img src={all_icons.cup}></img>}
-                                {cell === 'water' && <img src={all_icons.geng_icon}></img>}
-                                {/* {cell === 'water' && <FontAwesomeIcon icon={faWater} color='blue' />} */}
-                                {cell === 'cat' && <img src={all_icons.t1_icon}></img>}
-                                {/* {cell === 'cat' && <FontAwesomeIcon icon={faCat} color='#111' />} */}
+                                {cell === 'fish' && <FontAwesomeIcon icon={faFishFins} color='#111' />}
+                                {/* {cell === 'fish' && <img src={all_icons.cup}></img>} */}
+                                {/* {cell === 'water' && <img src={all_icons.geng_icon}></img>} */}
+                                {cell === 'water' && <FontAwesomeIcon icon={faWater} color='blue' />}
+                                {/* {cell === 'cat' && <img src={all_icons.t1_icon}></img>} */}
+                                {cell === 'cat' && <FontAwesomeIcon icon={faCat} color='#111' />}
                             </div>
                         ))}
                     </div>
@@ -171,7 +171,8 @@ export const Bai3_4 = () => {
                 <form className='form' onSubmit={handleSubmit}>
                     <textarea
                         name="mazeData"
-                        placeholder="Nhập dữ liệu của mê cung ở đây..."
+                        placeholder="Nhập dữ liệu của mê cung ở đây...
+Sử dụng l,r,u,d để di chuyển"
                         rows={10}
                         cols={50}
                         value={mazeInput}
