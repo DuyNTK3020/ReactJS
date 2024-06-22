@@ -1,40 +1,130 @@
-import React from 'react'
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
-
-const libraries = ['places'];
-const mapContainerStyle = {
-  width: '100vw',
-  height: '100vh',
-};
-const center = {
-  lat: 7.2905715, // default latitude
-  lng: 80.6337262, // default longitude
-};
-
+import React, { useEffect, useRef, useState } from "react";
+import "./Bai5.scss";
+import L from "leaflet";
+import "leaflet-routing-machine";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import all_icons from "../Assets/Icons/all_icons";
 
 export const Bai5 = () => {
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'YOUR_API_KEY',
-    libraries,
-  });
+  const mapRef = useRef(null);
+  const [startPoint, setStartPoint] = useState(null);
+  const [endPoint, setEndPoint] = useState(null);
+  const [startAddress, setStartAddress] = useState("");
+  const [endAddress, setEndAddress] = useState("");
+  const [activeInput, setActiveInput] = useState(null);
 
-  if (loadError) {
-    return <div>Error loading maps</div>;
-  }
+  useEffect(() => {
+    if (mapRef.current) {
+      return;
+    }
 
-  if (!isLoaded) {
-    return <div>Loading maps</div>;
-  }
+    const map = L.map("map").setView([21.006, 105.843], 15);
+    mapRef.current = map;
+
+    const mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>";
+
+    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+      attribution: "Leaflet &copy; " + mapLink + ", contribution",
+      maxZoom: 18,
+    }).addTo(map);
+
+    map.on("click", function (e) {
+      const lat = e.latlng.lat.toFixed(4);
+      const lng = e.latlng.lng.toFixed(4);
+
+      if (activeInput === "start") {
+        setStartPoint([lat, lng]);
+        fetchAddress(lat, lng, setStartAddress);
+      } else if (activeInput === "end") {
+        setEndPoint([lat, lng]);
+        fetchAddress(lat, lng, setEndAddress);
+      }
+    });
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+    };
+  }, [activeInput]);
+
+  const fetchAddress = async (lat, lng, setAddress) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      );
+      const data = await response.json();
+      setAddress(data.display_name);
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      setAddress("Unknown location");
+    }
+  };
+
+  const handleFindRoute = () => {
+    if (!startPoint || !endPoint) return;
+
+    const map = mapRef.current;
+    const startIcon = L.icon({
+      iconUrl: all_icons.start,
+      iconSize: [30, 30],
+    });
+
+    const endIcon = L.icon({
+      iconUrl: all_icons.end,
+      iconSize: [30, 30],
+    });
+
+    L.Routing.control({
+      waypoints: [L.latLng(startPoint), L.latLng(endPoint)],
+      createMarker: function (i, waypoint, n) {
+        const icon = i === 0 ? startIcon : endIcon;
+        return L.marker(waypoint.latLng, { icon: icon });
+      },
+    }).addTo(map);
+  };
+
+  const formatInputValue = (address, point) => {
+    if (!address || !point) return "";
+    return `${address} (${point[0]}, ${point[1]})`;
+  };
 
   return (
-    <div>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={10}
-        center={center}
-      >
-        <Marker position={center} />
-      </GoogleMap>
+    <div className="Bai5">
+      <div className="container">
+        <div className="container-left">
+          <form action="" className="form">
+            <div className="form-group">
+              <label htmlFor="startPoint">Start</label>
+              <input
+                type="text"
+                id="startPoint"
+                name="startPoint"
+                value={formatInputValue(startAddress, startPoint)}
+                readOnly
+                onClick={() => setActiveInput("start")}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="endPoint">End</label>
+              <input
+                type="text"
+                id="endPoint"
+                name="endPoint"
+                value={formatInputValue(endAddress, endPoint)}
+                readOnly
+                onClick={() => setActiveInput("end")}
+              />
+            </div>
+          </form>
+          <button className="btn" onClick={handleFindRoute}>
+            Tìm đường
+          </button>
+        </div>
+        <div className="container-right">
+          <div id="map"></div>
+        </div>
+      </div>
     </div>
   );
-}
+};

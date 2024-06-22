@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Bai2.scss';
-import all_bai2_img from '../Assets/all_bai2_img'
+import all_bai2_img from '../Assets/all_bai2_img';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -41,6 +41,7 @@ export const Bai2 = () => {
             }
             newData.push(row);
         }
+        console.log(newData);
         setData(newData);
     }; 
 

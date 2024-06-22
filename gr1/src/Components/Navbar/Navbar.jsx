@@ -19,7 +19,7 @@ export const Navbar = () => {
             <li><Link className={menu === "bai3_4" ? "active" : ""} onClick={() => {setMenu("bai3_4")}} to ='/bai3_4'>Bài 3 và 4</Link></li>
             <li><Link className={menu === "bai5" ? "active" : ""} onClick={() => {setMenu("bai5")}} to ='/bai5'>Bài 5</Link></li>
             <li><Link className={menu === "bai6" ? "active" : ""} onClick={() => {setMenu("bai6")}} to ='/bai6'>Bài 6</Link></li>
-            <li><Link className={menu === "tictactoe" ? "active" : ""} onClick={() => {setMenu("tictactoe")}} to ='/tictactoe'>TicTacToe</Link></li>
+            {/* <li><Link className={menu === "tictactoe" ? "active" : ""} onClick={() => {setMenu("tictactoe")}} to ='/tictactoe'>TicTacToe</Link></li> */}
         </ul>
     </div>
   )
