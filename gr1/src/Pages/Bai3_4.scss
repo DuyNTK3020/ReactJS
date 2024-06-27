@@ -1,9 +1,9 @@
 .Bai3 {
     text-align: center;
+    padding: 32px;
 
     h1 {
         display: inline-block;
-        padding: 20px 0;
         font-size: 28px;
         color: #088178;
         font-weight: 500;
@@ -27,6 +27,7 @@
         display: flex;
         align-items: flex-start;
         justify-content: center;
+        margin-top: 20px;
         gap: 40px;
         .board {
             display: flex;

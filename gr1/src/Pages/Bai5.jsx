@@ -30,8 +30,8 @@ export const Bai5 = () => {
     }).addTo(map);
 
     map.on("click", function (e) {
-      const lat = e.latlng.lat.toFixed(4);
-      const lng = e.latlng.lng.toFixed(4);
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
 
       if (activeInput === "start") {
         setStartPoint([lat, lng]);
@@ -84,34 +84,32 @@ export const Bai5 = () => {
     }).addTo(map);
   };
 
-  const formatInputValue = (address, point) => {
-    if (!address || !point) return "";
-    return `${address} (${point[0]}, ${point[1]})`;
-  };
-
   return (
     <div className="Bai5">
+      <h1>Bài 5: Nhúng và tương tác với bản đồ OpenStreetMap</h1>
       <div className="container">
         <div className="container-left">
           <form action="" className="form">
             <div className="form-group">
-              <label htmlFor="startPoint">Start</label>
+              <label htmlFor="startPoint">Điểm xuất phát</label>
+              <p><strong>Địa chỉ:</strong> {startAddress}</p>
               <input
                 type="text"
                 id="startPoint"
                 name="startPoint"
-                value={formatInputValue(startAddress, startPoint)}
+                value={startPoint}
                 readOnly
                 onClick={() => setActiveInput("start")}
               />
             </div>
             <div className="form-group">
-              <label htmlFor="endPoint">End</label>
+              <label htmlFor="endPoint">Điểm đến</label>
+              <p><strong>Địa chỉ:</strong> {endAddress}</p>
               <input
                 type="text"
                 id="endPoint"
                 name="endPoint"
-                value={formatInputValue(endAddress, endPoint)}
+                value={endPoint}
                 readOnly
                 onClick={() => setActiveInput("end")}
               />

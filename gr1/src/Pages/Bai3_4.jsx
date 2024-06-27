@@ -130,7 +130,7 @@ export const Bai3_4 = () => {
                 return;
             }
 
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
     };
 
